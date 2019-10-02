@@ -17,15 +17,16 @@ echo '=================== Update all submodules ==================='
 git submodule init
 git submodule update --recursive --remote
 echo '=================== Build site ==================='
-HUGO_ENV=production hugo -v --minify -d dist
+HUGO_ENV=production hugo -v --minify -d ../dist
 echo '=================== Publish to GitHub Pages ==================='
-cd dist
+cd ../dist
+ls -a
 remote_repo="git@github.com:${GITHUB_DEPLOY_REPOSITORY}.git" && \
 remote_branch=${GITHUB_DEPLOY_BRANCH} && \
 echo "Pushing Builds to $remote_repo:$remote_branch" && \
-git init && \
+# git init && \
 git remote add deploy $remote_repo && \
-git checkout $remote_branch || git checkout --orphan $remote_branch && \
+git checkout $remote_branch 2>/dev/null || git checkout -b $remote_branch && \
 git config user.name "${GITHUB_ACTOR}" && \
 git config user.email "${GITHUB_ACTOR}@users.noreply.github.com" && \
 git add . && \
